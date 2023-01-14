@@ -24,8 +24,22 @@ module.exports = {
             url: GOERLI_RPC_URL,
             accounts: [PRIVATE_KEY],
             chainId: 5,
-            blockConfirmations: 6,
+            blockConfirmations: 3,
         },
+    },
+    etherscan: {
+        // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
+        apiKey: {
+            goerli: ETHERSCAN_API_KEY,
+        },
+    },
+    gasReporter: {
+        enabled: false,
+        currency: "USD",
+        outputFile: "gas-report.txt",
+        noColors: true,
+        // coinmarketcap: COINMARKETCAP_API_KEY,
+        token: "ETH",
     },
     solidity: "0.8.17",
     namedAccounts: {
@@ -35,5 +49,8 @@ module.exports = {
         player: {
             default: 1,
         },
+    },
+    mocha: {
+        timeout: 500000, // 500 seconds
     },
 }

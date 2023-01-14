@@ -9,7 +9,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransferFailed();
 error Raffle__NotOpen();
-error Raffle__UpKeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
+error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
 
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     enum RaffleState {
@@ -67,19 +67,19 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function checkUpkeep(
         bytes memory /*checkData*/
-    ) public override returns (bool upKeepNeeded, bytes memory /*performData*/) {
+    ) public override returns (bool upkeepNeeded, bytes memory /*performData*/) {
         bool isOpen = (RaffleState.OPEN == s_raffleState);
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
         bool hasPlayers = (s_players.length > 0);
         bool hasBalance = address(this).balance > 0;
-        upKeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
+        upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
     }
 
     //function requestRandomWinner() external {}
     function performUpkeep(bytes calldata /*checkData*/) external override {
-        (bool upKeepNeeded, ) = checkUpkeep("");
-        if (!upKeepNeeded) {
-            revert Raffle__UpKeepNotNeeded(
+        (bool upkeepNeeded, ) = checkUpkeep("");
+        if (!upkeepNeeded) {
+            revert Raffle__UpkeepNotNeeded(
                 address(this).balance,
                 s_players.length,
                 uint256(s_raffleState)
